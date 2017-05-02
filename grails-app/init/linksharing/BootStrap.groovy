@@ -1,13 +1,17 @@
 package linksharing
 
+import com.demo.linksharing.Subscription
+import com.demo.linksharing.Topic
 import com.demo.linksharing.User
+import com.demo.linksharing.util.Seriousness
+import com.demo.linksharing.util.Visibility
 
 class BootStrap {
 
     def init = { servletContext ->
         createUser()
-        def destroy = {
-        }
+        createTopics()
+
     }
 
     def createUser() {
@@ -31,6 +35,20 @@ class BootStrap {
         if (admin.hasErrors()) {
             admin.errors.allErrors.each {
                 log.error it
+            }
+        }
+    }
+
+    def createTopics() {
+        (1..(User.count())).each { s ->
+            5.times {
+                Topic topic = new Topic(topicName: "topic${it}", createdBy: User.get(s), visibility: Visibility.PUBLIC)
+//                topic.addToSubscription(new Subscription(user: User.get(s), topic: topic, seriousness: Seriousness.SERIOUS))
+                topic.save(failOnError: true)
+                if (topic.hasErrors()) {
+                    log.error(topic.errors.allErrors())
+                }
+
             }
         }
     }
