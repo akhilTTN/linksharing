@@ -1,0 +1,15 @@
+
+environments:
+  development:
+
+
+      dataSource:
+            pooled : false
+            jmxExport : true
+            driverClassName: com.mysql.jdbc.Driver
+            username: root
+            password: root
+            dbCreate: create-drop
+            url: jdbc:mysql://localhost:3306/linksharing
+            logsql : true
+            dialect : org.hibernate.dialect.MySQL5InnoDBDialect
