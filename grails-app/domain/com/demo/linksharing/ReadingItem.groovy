@@ -13,5 +13,6 @@ class ReadingItem {
         isRead nullable: false
     }
 
-    static belongsTo = [resource: Resource, user:User]
+    static belongsTo = [resource: Resource, user: User]
+
 }

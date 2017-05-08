@@ -7,4 +7,9 @@ enum Visibility {
 
     PUBLIC,
     PRIVATE
+
+
+    static Visibility getEnum(String value) {
+        return valueOf(value.toUpperCase())
+    }
 }

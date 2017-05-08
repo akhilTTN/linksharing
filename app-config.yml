@@ -11,6 +11,6 @@ environments:
             password: root
             dbCreate: create
             url: jdbc:mysql://localhost:3306/linksharing
-            logSql : true
+#            logSql : true
             formatSql: true
             dialect : org.hibernate.dialect.MySQL5InnoDBDialect

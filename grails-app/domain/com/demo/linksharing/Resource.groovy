@@ -14,6 +14,6 @@ abstract class Resource {
         topic(nullable: false)
     }
 
-    static belongsTo = [user: User, topic: Topic]
+    static belongsTo = [createdBy: User, topic: Topic]
     static hasMany = [ratings:ResourceRating,readingItem:ReadingItem]
 }

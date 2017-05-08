@@ -2,7 +2,9 @@ package com.demo.linksharing
 
 import com.demo.linksharing.util.Seriousness
 import com.demo.linksharing.util.Visibility
+import groovy.transform.ToString
 
+@ToString
 class Topic {
 
     static constraints = {
@@ -12,6 +14,7 @@ class Topic {
     }
 
     String topicName
+    User createdBy
     Date dateCreated
     Date lastUpdated
     Visibility visibility
@@ -28,5 +31,23 @@ class Topic {
                 log.info " Subscription ${subscription} saved successfully"
             }
         }
+    }
+
+    static namedQueries = {
+        names { String name ->
+            eq "topicName", name
+        }
+    }
+
+    static mapping = {
+        sort topicName:'asc'
+    }
+
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "topicName='" + topicName + '\'' +
+                '}';
     }
 }

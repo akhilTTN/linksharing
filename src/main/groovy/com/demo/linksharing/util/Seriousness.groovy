@@ -7,4 +7,8 @@ enum Seriousness {
     CASUAL,
     SERIOUS,
     VERY_SERIOUS
+
+    static Seriousness getEnum(String value){
+        return valueOf(value.toUpperCase())
+    }
 }

@@ -20,11 +20,11 @@ class User {
         photo(nullable: true)
         admin(nullable: true)
         active(nullable: true)
-        /*confirmPassword(blank: true, nullable: true, validator: { val, obj ->
+        confirmPassword(blank: true, nullable: true, validator: { val, obj ->
             if (val != obj.password) {
                 return 'com.ttn.linksharing.User.confirmPassword.validator'
             }
-        })*/
+        })
     }
 
 
@@ -36,6 +36,7 @@ class User {
     Byte[] photo
     Boolean admin
     Boolean active
+    def confirmPassword
     Date dateCreated
     Date lastUpdated
 
@@ -50,5 +51,15 @@ class User {
 
     static mapping = {
         photo(sqlType: 'longBlob')
+        sort id:'desc'
+        topics fetch: 'join'
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                '}';
     }
 }
