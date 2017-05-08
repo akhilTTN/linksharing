@@ -44,7 +44,7 @@ class TopicController {
 
     def topicDelete(Long id) {
 
-        Topic topic = Topic.get(id)
+        Topic topic = Topic.load(id)
         User user = session.user
 
         if (topic) {
