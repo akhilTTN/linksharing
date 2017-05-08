@@ -2,14 +2,14 @@ package com.demo.linksharing
 
 class ResourceController {
 
-    def index() { }
+    def index() {}
 
-    def delete(int id){
+    def delete(int id) {
         User user = session.user
         if (user.resources.createdBy == user) {
             Resource resource = Resource.load(id)
             try {
-                if (resource.delete(flush:true)) {
+                if (resource.delete(flush: true)) {
                     flash.message = "Resource deleted Successfully"
                 } else {
                     flash.error = "Resource not deleted"
@@ -23,4 +23,5 @@ class ResourceController {
             flash.error = "Resource deletion not allowed"
         }
         redirect(uri: '/')
+    }
 }
