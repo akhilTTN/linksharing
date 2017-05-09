@@ -3,10 +3,6 @@ package com.demo.linksharing
 import com.demo.linksharing.util.Seriousness
 
 class Subscription {
-
-
-    User user
-    Topic topic
     Seriousness seriousness = Seriousness.SERIOUS
     Date dateCreated
     Date lastUpdated
@@ -15,10 +11,10 @@ class Subscription {
         topic nullable: false, unique: 'user'
         seriousness nullable: false
     }
-    static belongsTo = [user:User , topic: Topic]
-    
+    static belongsTo = [user: User, topic: Topic]
+
     static mapping = {
         user lazy: false
-//        topic lazy: false
+        topic lazy: false
     }
 }

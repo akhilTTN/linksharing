@@ -4,61 +4,29 @@ import com.demo.linksharing.util.Visibility
 
 class TopicController {
 
-    def index() { }
+    def topicService
 
-    def show(int id){
-        Topic topic = Topic.read(id)
-        if(topic){
-            render("${params.toString()}")
-        }
-        else{
-            render "Topic not found"
-        }
-    }
+    def index() {}
 
-    def delete(int id){
-        Topic topic = Topic.load(id)
-        if(topic)
-            topic.delete()
-        else
-            render "topic not found"
+    def show(int id) {
+        render topicService.showTopic(id)
     }
 
 
-    def save(String topicName, String visibility){
-        User user=session.user
-        Topic topic = Topic.findOrCreateByCreatedByAndTopicName(user,topicName)
-        topic.visibility = Visibility.getEnum(visibility)
-        if (topic.save(flush: true)) {
-            render flash.message = "${topic} saved Successfully"
-        } else {
-            render flash.error = "Error saving ${topic} Not saved"
-        }
-
+    def save(String topicName, String visibility) {
+        User user = session.user
+        if (user) {
+            render topicService.addTopic(topicName, visibility, user)
+        } else
+            render "Error saving topic Not saved"
     }
 
-    //todo
-    def topicSave(){
-
-    }
 
     def topicDelete(Long id) {
-
-        Topic topic = Topic.load(id)
         User user = session.user
-
-        if (topic) {
-            if (user.admin || (topic.createdBy.id == user.id)) {
-                topic.delete(flush: true)
-                flash.message = "Topic Deleted"
-            } else {
-                flash.error = "Topic can not be deleted by ${session.user}"
-            }
-        } else {
-            flash.error = "Topic not in database"
-
+        if (user) {
+            render topicService.deleteTopic(id,user)
+//        redirect(controller: 'login', action: 'index')
         }
-
-        redirect(controller: 'login', action: 'index')
     }
 }

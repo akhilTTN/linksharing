@@ -14,7 +14,6 @@ class Topic {
     }
 
     String topicName
-    User createdBy
     Date dateCreated
     Date lastUpdated
     Visibility visibility

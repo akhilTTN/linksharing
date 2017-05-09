@@ -9,7 +9,7 @@ environments:
             driverClassName: com.mysql.jdbc.Driver
             username: root
             password: root
-            dbCreate: create
+            dbCreate: create-drop
             url: jdbc:mysql://localhost:3306/linksharing
 #            logSql : true
             formatSql: true

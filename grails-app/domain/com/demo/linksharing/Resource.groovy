@@ -2,9 +2,7 @@ package com.demo.linksharing
 
 abstract class Resource {
 
-    User createdBy
     String desctiption
-    Topic topic
     Date dateCreated
     Date lastUpdated
 

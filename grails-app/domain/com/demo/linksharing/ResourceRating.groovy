@@ -13,5 +13,5 @@ class ResourceRating {
         user(nullable: false)
         score(unique: false, range: (1..5))
     }
-    static belongsTo = [resource: Resource, user: User]
+    static belongsTo = [resource:Resource,user: User]
 }

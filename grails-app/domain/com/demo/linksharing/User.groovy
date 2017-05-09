@@ -21,7 +21,7 @@ class User {
         admin(nullable: true)
         active(nullable: true)
         confirmPassword(blank: true, nullable: true, validator: { val, obj ->
-            if (val != obj.password) {
+            if (!val.equals(obj.password)) {
                 return 'com.ttn.linksharing.User.confirmPassword.validator'
             }
         })
@@ -36,23 +36,22 @@ class User {
     Byte[] photo
     Boolean admin
     Boolean active
-    def confirmPassword
+    String confirmPassword
     Date dateCreated
     Date lastUpdated
 
-    static transients = ['name']
+    static transients = ['name', 'confirmPassword']
 
     String getName() {
         return (firstName + " " + lastName)
     }
 
-    static hasMany = [topics: Topic, subscription: Subscription,resources:Resource,reads:ReadingItem]
+    static hasMany = [topics: Topic, subscription: Subscription, resources: Resource, reads: ReadingItem]
 
 
     static mapping = {
         photo(sqlType: 'longBlob')
-        sort id:'desc'
-        topics fetch: 'join'
+        sort id: 'desc'
     }
 
 
