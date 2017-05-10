@@ -1,27 +1,39 @@
 package com.demo.linksharing
 
+import CO.ResourceSearchCO
+import com.demo.linksharing.util.Visibility
+
+
 class ResourceController {
 
-    def index() {}
+    def resourceService
+
+    def index() {
+
+    }
 
     def delete(int id) {
-        User user = session.user
-        if (user.resources.createdBy == user) {
-            Resource resource = Resource.load(id)
-            try {
-                if (resource.delete(flush: true)) {
-                    flash.message = "Resource deleted Successfully"
-                } else {
-                    flash.error = "Resource not deleted"
-                }
+        render resourceService.deleteResourceService(id)
+    }
 
-            } catch (Exception e) {
-                log.error "Error : ${e.message}"
-                render "Resource can't be deleted"
-            }
-        } else {
-            flash.error = "Resource deletion not allowed"
+    def search(ResourceSearchCO resourceSearchCO) {
+        if (resourceSearchCO.q) {
+            resourceSearchCO.visibility = Visibility.PUBLIC
         }
-        redirect(uri: '/')
+    }
+
+
+    def show() {
+        Resource resource = Resource.get(1)
+        log.info("$resource")
+        render "${resource.topic} >>>>>>>>> ${resource.getRatingInfo()}"
+    }
+
+    def trendingTopic() {
+//        Topic topic =Topic.get(1)
+        Topic.getTrendingTopics().each {
+            render "${it} <br/>"
+        }
     }
 }
+

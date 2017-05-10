@@ -14,12 +14,12 @@ import com.demo.linksharing.util.Visibility
 class BootStrap {
 
     def init = { servletContext ->
-        createUser()
+        /*createUser()
         createTopics()
         createResource()
         subscribeToTopics()
         createReadingItems()
-        giveResourceRating()
+        giveResourceRating()*/
 
     }
 

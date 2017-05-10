@@ -4,7 +4,7 @@ package com.demo.linksharing
 class LoginCheckInterceptor {
 
     LoginCheckInterceptor() {
-        matchAll().excludes(controller: 'login')
+//        matchAll().excludes(controller: 'login')
     }
 
     boolean before() {

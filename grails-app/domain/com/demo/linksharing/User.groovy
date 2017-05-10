@@ -1,5 +1,8 @@
 package com.demo.linksharing
 
+import CO.SearchCO
+import org.hibernate.sql.JoinType
+
 class User {
 
     static constraints = {
@@ -60,5 +63,37 @@ class User {
         return "User{" +
                 "username='" + username + '\'' +
                 '}';
+    }
+
+
+    /*
+//todo GORM2 Q6) Add Inbox feature on user/index when user is loggedin
+- Create method getUnReadResources in user domain which takes SearchCO argument and returns unreaditems of user from ReadingItem domain
+- The search should also work using user/index page, q parameter of SearchCO. If searchco.q is found then getUnReadResources method
+will search the items based on ilike of resource.description.
+- The pagination parameter should also be used in getUnReadResources criteria query. Create readingItem/changeIsRead action which
+takes Long id and Boolean isRead
+- User executeUpdate to change the isRead of readingItem with given id
+- If value returned by executeUpdate is 0 then render error else render success
+*/
+
+    static def getUnReadResources(SearchCO searchCO) {
+        List result = ReadingItem.createCriteria().list {
+// resultTransform Transformers = Transformers.aliasToBean(ResourceDTO)
+            if (searchCO && searchCO.q) {
+                createAlias("resource", "r", JoinType.LEFT_OUTER_JOIN)
+                ilike("r.description", "%${searchCO.q}%")
+// eq('resource',Resource.findByDescriptionIlike(searchCO.q))
+                projections {
+                    property('id')
+                    property('r.description')
+                }
+            }
+            eq('isRead', false)
+            maxResults 5
+// eq('user',this)
+        }
+        println(result)
+        result
     }
 }

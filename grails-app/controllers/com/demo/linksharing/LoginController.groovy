@@ -4,18 +4,18 @@ package com.demo.linksharing
 class LoginController {
 
     def index() {
-        session["user"] = User.get(1)
-        if (session.user != null) {
+//        session["user"] = User.get(1)
+        if (session.user) {
             session.message = "Congratulation $session.user"
             forward(controller: "user", action: "index")
         } else {
-            render "Failure"
+            render view:'index'
         }
     }
 
     def loginHandler(String username , String password) {
         User user = User.findByUsernameAndPassword(username,password)
-        if(user!=null){
+        if(user){
             if(user.active){
                 session.user=user
                 forward(action:"index")
@@ -31,14 +31,14 @@ class LoginController {
     }
 
     //todo
-    def registration(){
+    def register(){
 
 
     }
 
     def logout() {
         session.invalidate()
-        forward(action:"index")
+//        forward(action:"loginHandler")
 
     }
 

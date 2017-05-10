@@ -10,14 +10,11 @@ class ApplicationInterceptor {
 
     boolean before() {
         true
-        if (session.user != null) {
-            log.info("INCOMING REQUEST STARTED ${params.toString()}")
-        }
+        log.info("INCOMING REQUEST STARTED ${params.toString()}")
     }
 
     boolean after() {
         true
-
         log.info("INCOMING REQUEST STARTED ${params.toString()}")
 
     }

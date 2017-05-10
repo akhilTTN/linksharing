@@ -8,7 +8,7 @@ class TopicController {
 
     def index() {}
 
-    def show(int id) {
+    def show(CO.ResourceSearchCO resourceSearchCO, int id) {
         render topicService.showTopic(id)
     }
 
@@ -25,8 +25,12 @@ class TopicController {
     def topicDelete(Long id) {
         User user = session.user
         if (user) {
-            render topicService.deleteTopic(id,user)
+            render topicService.deleteTopic(id, user)
 //        redirect(controller: 'login', action: 'index')
         }
+    }
+
+    def search(){
+
     }
 }

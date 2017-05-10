@@ -2,7 +2,7 @@ package com.demo.linksharing
 
 class ResourceRating {
 
-    Resource resource
+//    Resource resource
     User user
     Integer score
     Date dateCreated

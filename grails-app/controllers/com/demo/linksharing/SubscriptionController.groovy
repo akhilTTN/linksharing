@@ -4,16 +4,13 @@ import com.demo.linksharing.util.Seriousness
 
 class SubscriptionController {
 
-    def index() { }
+    def subscriptionService
+
+    def index() {}
 
     def save(Integer id) {
-        Subscription subscription = new Subscription(user: User.get(session.user.id), topic: Topic.get(id))
-        if (subscription.save(flush: true)) {
-            flash.message = "Subscription saved successfully"
-        } else {
-            flash.error = subscription.errors.allErrors.collect { message(error: it) }.join(", ")
-        }
-        redirect(controller: 'user', action: 'index')
+        User user= session.user
+        render subscriptionService.save(id,user)
     }
 
     def update(Integer id, String serious) {
