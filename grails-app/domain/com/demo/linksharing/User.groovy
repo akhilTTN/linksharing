@@ -1,6 +1,10 @@
 package com.demo.linksharing
 
 import CO.SearchCO
+import VO.InboxVO
+import VO.PostsVO
+import VO.SubscriptionVO
+import VO.TopicVO
 import org.hibernate.sql.JoinType
 
 class User {
@@ -31,8 +35,8 @@ class User {
     }
 
 
-    String firstName;
-    String lastName;
+    String firstName
+    String lastName
     String email
     String username
     String password
@@ -55,16 +59,14 @@ class User {
     static mapping = {
         photo(sqlType: 'longBlob')
         sort id: 'desc'
+        subscription lazy: false
     }
 
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                '}';
+        return "${username}"
     }
-
 
     /*
 //todo GORM2 Q6) Add Inbox feature on user/index when user is loggedin
@@ -77,23 +79,78 @@ takes Long id and Boolean isRead
 - If value returned by executeUpdate is 0 then render error else render success
 */
 
-    static def getUnReadResources(SearchCO searchCO) {
+    def getUnReadResources(SearchCO searchCO) {
+        List<PostsVO> PostsVOList = []
         List result = ReadingItem.createCriteria().list {
-// resultTransform Transformers = Transformers.aliasToBean(ResourceDTO)
+            createAlias("resource", "r", JoinType.LEFT_OUTER_JOIN)
+            projections {
+//                property('r.id')
+                property('r.topic')
+                property('r.id')
+                property('r.desctiption')
+                property('r.createdBy')
+            }
+//            resultTransform (Transformers.aliasToBean(ResourceDTO))
             if (searchCO && searchCO.q) {
-                createAlias("resource", "r", JoinType.LEFT_OUTER_JOIN)
                 ilike("r.description", "%${searchCO.q}%")
-// eq('resource',Resource.findByDescriptionIlike(searchCO.q))
-                projections {
-                    property('id')
-                    property('r.description')
-                }
             }
             eq('isRead', false)
+            eq('user', this)
             maxResults 5
-// eq('user',this)
         }
-        println(result)
-        result
+        result.each {
+            PostsVOList.add(new PostsVO(topicName: it[0].topicName, resourceID: it[1],
+                    createdBy: it[3], desctiption: it[2],topicID: it[0].id))
+        }
+        println(PostsVOList)
+        PostsVOList
+    }
+
+
+
+
+
+    static def getSubscribedTopic(User user) {
+        List<TopicVO> subscriptions = []
+        def subscriptionList = Subscription.createCriteria().list() {
+            projections {
+                property('topic')
+                property('seriousness')
+            }
+            eq('user', user)
+//            maxResults 5
+        }
+
+        subscriptionList.each {
+            Topic topic = it[0]
+            subscriptions.add(new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+                    createdBy: topic.createdBy, count: topic.resources.size(), subsCount: topic.subscription.size()))
+        }
+        return subscriptions
+    }
+
+
+    static def allCreatedTopics(User user){
+        List<TopicVO> topicsCreated =[]
+        List<Topic> list = Topic.findAllByCreatedBy(user)
+        list.each {
+            Topic topic = it
+            topicsCreated.add(new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+                    createdBy: topic.createdBy, count: topic.resources.size(), subsCount: topic.subscription.size()))
+
+        }
+
+        topicsCreated
+    }
+
+    static List<PostsVO> allCreatedPost(User user) {
+        List<PostsVO> allPosts = []
+        List<Resource> list = Resource.findAllByCreatedBy(user)
+        list.each {
+            Resource resource = it
+            allPosts.add(new PostsVO(resourceID: resource.id,desctiption: resource.desctiption,
+                    topicID: resource.topicId,topicName: resource.topic.topicName,createdBy: resource.createdBy))
+        }
+        allPosts
     }
 }

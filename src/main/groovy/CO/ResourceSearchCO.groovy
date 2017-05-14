@@ -8,4 +8,11 @@ import com.demo.linksharing.util.Visibility
 class ResourceSearchCO extends SearchCO {
     long topicID
     Visibility visibility
+
+    static constraints = {
+        topic_id(nullable:true)
+        visibility(validator: { val, obj ->
+            Visibility.getEnum(val) == Visibility.PUBLIC
+        })
+    }
 }

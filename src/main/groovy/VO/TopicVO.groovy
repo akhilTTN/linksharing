@@ -12,6 +12,7 @@ class TopicVO {
     Visibility visibility
     int count
     User createdBy
+    int subsCount
 
 
     @Override
@@ -22,6 +23,7 @@ class TopicVO {
                 ", visibility=" + visibility +
                 ", count=" + count +
                 ", createdBy=" + createdBy +
+                ", subsCount=" + subsCount +
                 '}';
     }
 }

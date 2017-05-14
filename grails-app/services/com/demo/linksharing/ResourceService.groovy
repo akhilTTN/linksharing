@@ -1,5 +1,6 @@
 package com.demo.linksharing
 
+import CO.LinkCO
 import grails.transaction.Transactional
 
 @Transactional
@@ -24,6 +25,20 @@ class ResourceService {
             }
         } else {
             return "Resource not found"
+        }
+    }
+
+    def createResource(LinkCO linkCO) {
+        log.info("${linkCO}")
+        Resource resource = new LinkResource(url: linkCO.url,description: linkCO.description,
+                topic: Topic.get(linkCO.id),createdBy: linkCO.createdBy)
+        log.info("${resource}")
+        resource.save(failOnError:true,flush:true)
+        if(resource.hasErrors()){
+            flash.error = "sorry resource can't be saved"
+        }else{
+            log.info("resource successfully saved")
+//            flash.message = "resource successfully saved"
         }
     }
 }

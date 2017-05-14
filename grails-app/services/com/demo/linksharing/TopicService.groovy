@@ -1,11 +1,15 @@
 package com.demo.linksharing
 
+import CO.TopicCO
+import com.demo.linksharing.util.Seriousness
 import com.demo.linksharing.util.Visibility
 import grails.transaction.Transactional
 import org.hibernate.Session
 
 @Transactional
 class TopicService {
+
+    def subscriptionService
 
     def serviceMethod() {
 
@@ -31,7 +35,7 @@ class TopicService {
     }
 
 
-    def showTopic(int id) {
+    /*def showTopic(int id) {
         Topic topic = Topic.get(id)//Topic?.read(id)
         log.info(" topic recieved : $topic")
         if (topic != null) {
@@ -39,15 +43,13 @@ class TopicService {
         } else {
             return "Topic not found"
         }
-    }
+    }*/
 
 
-    def addTopic(String topicName, String visibility, User user) {
-//
-        Topic topic = Topic.findOrCreateByCreatedByAndTopicName(user, topicName)
-        topic.visibility = Visibility.getEnum(visibility)
-        if (topic.save(flush: true)) {
-            return "${topic} saved Successfully"
-        }
+    def createTopic(TopicCO topicCO, User user) {
+        Topic topic = new Topic(topicName: topicCO.topicName,visibility: Visibility.getEnum(topicCO.visibility),createdBy: user)
+        topic.save(flush:true,failOnError:true)
+        // throw new IOException()
+        subscriptionService.subscribeCreator(topic,Seriousness.SERIOUS)
     }
 }

@@ -48,4 +48,11 @@ class SubscriptionController {
 
         redirect(controller: 'user', action: 'index')
     }
+
+    def allSubscribedUsers(){
+        println("hello from subscribed users")
+        Topic topic = Topic.get(1)
+        def list = topic.getSubscribedUsers(topic)
+        render list
+    }
 }

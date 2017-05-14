@@ -1,6 +1,8 @@
 package com.demo.linksharing
 
 import CO.ResourceSearchCO
+import VO.PostDetailVO
+import VO.PostsVO
 import VO.RatingInfoVO
 
 abstract class Resource {
@@ -36,17 +38,20 @@ abstract class Resource {
     }
 
 
-        RatingInfoVO getRatingInfo(){
-        def result=ResourceRating.createCriteria().get() {
-            projections{
-                count('id')
-                sum('score')
+    static def getRatingInfo(Long resourceId) {
+        List<Long> ratingInfoVO = ResourceRating.createCriteria().get {
+            projections {
+                count('score')
                 avg('score')
+                sum('score')
             }
-            eq('resource',this)
+//            eq('user',this)
+            eq('resource', Resource.get(resourceId))
         }
-        println("${result.toString()}")
-        return new RatingInfoVO(totalVotes: result[0],totalScore: result[1], averageScore: result[2])
+        println(ratingInfoVO)
+        if (ratingInfoVO[0] != 0){
+            new RatingInfoVO(totalVotes: ratingInfoVO[0], averageScore: ratingInfoVO[1], totalScore: ratingInfoVO[2])
+        }
     }
 
 /*
@@ -62,19 +67,85 @@ abstract class Resource {
             projections {
                 'resource' {
                     groupProperty('id')
-                    count('id')
-                    order('id', 'asc')
                 }
+                count('id', 'count')
+                order('count', 'desc')
             }
             maxResults 5
         }
-        List listOfIdOfResourcesFromResourceRating = []
+        ArrayList fResult = []
         result.each {
-            listOfIdOfResourcesFromResourceRating.add(Resource.get(it[0] as Serializable))
+            PostsVO p = new PostsVO()
+            Resource resource = Resource.get(it[0])
+            p.resourceID = it[0] as long//resource.id
+            p.desctiption = resource.desctiption
+            p.topicID = resource.topicId
+            p.topicName = resource.topic.topicName
+            p.createdBy = resource.createdBy
+            fResult.add(p)
         }
-        println(listOfIdOfResourcesFromResourceRating)
-        listOfIdOfResourcesFromResourceRating
+        println(fResult)
+        fResult
+
     }
+
+
+    static def getResourceDetails(long id) {
+        RatingInfoVO ratingInfoVO = getRatingInfo(id)
+        Resource resource = Resource.get(id)
+        if (ratingInfoVO == null) {
+            ratingInfoVO = new RatingInfoVO(averageScore: 0)
+        }
+        PostDetailVO detailedPostVO = new PostDetailVO(resourceID: id, description: resource.desctiption,
+                ratings: ratingInfoVO.averageScore, updated: resource.lastUpdated,
+                username: resource.createdBy.username, fullName: resource.createdBy.name,
+                topicName: resource.topic.topicName)
+        detailedPostVO
+    }
+
+
+    static def getAllResources(Topic topic) {
+        List<PostsVO> allResources = []
+        List resources = Resource.createCriteria().list {
+            projections {
+                property('id')
+                property('desctiption')
+                property('topic')
+                property('createdBy')
+            }
+            eq('topic', topic)
+        }
+        resources.each {
+            Topic topic1 = it[2]
+            allResources.add(new PostsVO(resourceID: it[0],
+                    desctiption: it[1],
+                    topicID: topic1.id,
+                    topicName: topic1.topicName,
+                    createdBy: it[3]))
+        }
+        allResources
+    }
+
+
+    static def recentPost() {
+        List<PostsVO> recentPost = []
+        def recentPostList = Resource.createCriteria().list {
+//            projections {
+//                property('id')
+//            }
+            order('lastUpdated', 'desc')
+            maxResults 5
+        }
+        recentPostList.each {
+            Resource resource = it
+            recentPost.add(new PostsVO(resourceID: resource.id, desctiption: resource.desctiption,
+                    topicID: resource.topicId, topicName: resource.topic.topicName, createdBy: resource.createdBy))
+        }
+        recentPost
+    }
+
+
+
 
 
 }

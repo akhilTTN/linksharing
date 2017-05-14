@@ -16,8 +16,6 @@ class SubscriptionInterceptor {
             render("User ${user} is already subscribed to the ${topic}.")
             return false
         } else {
-            log.info("User ${user} is subscribed to the ${topic}.")
-            render "User ${user} is already subscribed to the ${topic}."
             return true
         }
     }
