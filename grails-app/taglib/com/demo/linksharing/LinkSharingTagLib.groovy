@@ -92,6 +92,21 @@ class LinkSharingTagLib {
 
     }
 
+    def canEdit = { attr ->
+        Topic topic = Topic.get(attr.id)
+        User user = session.user
+        if(topic.createdBy.username == user.username)
+            out <<  """<span style="display: inline-block;">
+        <a href="#sendInvitation" data-toggle="modal"><span class="glyphicon glyphicon-envelope glyphsize"></span></a>
+        <a href="#"><span class="glyphicon glyphicon-edit glyphsize"></span></a>
+        <a href="#"><span class="glyphicon glyphicon-trash glyphsize"></span></a>
+        </span>"""
+        else
+            out << """<span style="display: inline-block;">
+        <a href="#"><span class="glyphicon glyphicon-envelope glyphsize"></span></a>
+        </span>"""
+    }
+
     def topicSubscriptionCount = { attrs ->
         long topicId = attrs.topicId
         def user = attrs.user
@@ -138,12 +153,12 @@ class LinkSharingTagLib {
     }
 
 
-    def toggleSubscription = {attr->
+    def toggleSubscription = { attr ->
         long id = attr.id
         User user = session.user
-        Topic topic= Topic.get(id)
+        Topic topic = Topic.get(id)
         Subscription subscription = Subscription.findByUserAndTopic(user, topic)
-        if(subscription)
+        if (subscription)
             out << "Unsubscribe"
         else
             out << "Subscribe"
@@ -151,17 +166,15 @@ class LinkSharingTagLib {
     }
 
 
-    def toggleAtivateButton= {attr->
+    def toggleAtivateButton = { attr ->
         long id = attr.id
         User user = User.get(id)
-        if(user.active)
+        if (user.active)
             out << "Deactivate"
         else
             out << "Activate"
 
     }
-
-
 
     /*def topiCreated = { attrs ->
         out << /<g:select name='id' from="${Topic.findAllByCreatedBy(session.user)}" optionKey='id' optionValue='name' class='form-control pull-right'

@@ -30,15 +30,16 @@
                 <i id="social-em" class="fa fa-envelope-square fa-2x social glyphsize"></i></a>
             <span class="pull-right">
                 <g:if test="${session.user}">
-                    %{--<a href="/resource/download" class="operations" style="margin-right:10px">Download</a>--}%
+                %{--<a href="/resource/download" class="operations" style="margin-right:10px">Download</a>--}%
                     <g:if test="${resource.linkResource()}">
                         <g:link action="download" controller="resource"
                                 params='["id": "${resource.resourceID}"]'><label>Download</label></g:link>
                     </g:if>
                     <g:else>
-                        <g:link controller="resource" action="newLink" params='["id": "${resource.resourceID}"]' target="_blank">view full site</g:link>
+                        <g:link controller="resource" action="newLink" params='["id": "${resource.resourceID}"]'
+                                target="_blank">view full site</g:link>
                     </g:else>
-                    %{--<a href="#" class="operations" style="margin-right:10px">View Full Site</a>--}%
+                %{--<a href="#" class="operations" style="margin-right:10px">View Full Site</a>--}%
                     <span><ls:markAsRead resource="${resource}"/></span>
                 </g:if>
                 <g:link action="viewPost" controller="resource"

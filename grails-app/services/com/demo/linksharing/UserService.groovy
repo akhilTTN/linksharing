@@ -20,7 +20,7 @@ class UserService {
             render("error")
             return
         }
-        File fileDest = new File(rootDir, "/uploads/${username}_${file.originalFilename}")
+        File fileDest = new File(rootDir, "/uploads/${file.originalFilename}")
         file.transferTo(fileDest)
 
         return "${rootDir}/uploads/${file.originalFilename}"

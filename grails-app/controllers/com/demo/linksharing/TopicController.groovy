@@ -12,6 +12,7 @@ import com.demo.linksharing.util.Visibility
 class TopicController {
 
     def topicService
+    def mailService
 
 
     def index() {}
@@ -78,15 +79,15 @@ class TopicController {
         render(view: "search", model: ["totalResult": searchResult.size(), "searchResult": searchResult, 'topics': new TopicVO(name: searchCO.q)])
     }
 
-    /*def shareTopic(String email, long id) {
+    def shareTopic(String email, long id) {
 
         def msg;
-        String inviter = session.user.userName
-        String topicName = Topic.get(id).name
+        String inviter = session.user.username
+        String topicName = Topic.get(id).topicName
         mailService.sendMail {
-            from "ishwarmanithapa@mgmail.com"
+            from "akhil@tothenew.com"
             to email
-            cc "ishwarmani.thapa@tothenew.com"
+            cc "akhilsr20@gmail.com"
             subject "invite from link sharing"
             text "Hi, You have been invite by ${inviter} to subscribe to ${topicName}"
 
@@ -94,7 +95,7 @@ class TopicController {
         flash.message = message(code: "invite.success")
         msg = flash.message
         redirect(controller: "user", action: "index", params: [message: msg])
-    }*/
+    }
 
     def toggleSubscription(long id) {
         log.info("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk ${id}")
@@ -113,4 +114,13 @@ class TopicController {
         }
 
     }
+
+
+    /*def changeSeriousness(long id){
+        Topic topic = Topic.get(id)
+        User user = session.user
+        Subscription subscription = Subscription.findByTopicAndUser(topic,user)
+        subscription.seriousness =
+
+    }*/
 }

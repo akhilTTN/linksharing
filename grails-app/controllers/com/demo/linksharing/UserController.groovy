@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage
 
 class UserController {
 
+    def userService
+
     def index() {
         params.max = 5
         params.offset = 0
@@ -74,8 +76,8 @@ class UserController {
             File imageFile = new File(photoPath)
             BufferedImage originalImage = ImageIO.read(imageFile);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(originalImage, "jpg", baos);
-            byte[] imageInByte = baos.toByteArray();
+            ImageIO.write(originalImage, "jpg", baos)
+            byte[] imageInByte = baos.toByteArray()
             response.setHeader('Content-length', imageInByte.length.toString())
             response.contentType = 'image/jpg' // or the appropriate image content type
             response.outputStream << imageInByte
@@ -161,8 +163,9 @@ class UserController {
             if (co.username)
                 user.username = co.username
             user.confirmPassword = user.password
-            //            if (user)
-            //                user.photoPath = co.photo   //todo
+            if (co.photo) {
+                user.photoPath = userService.upload(user.username, co.photo, request.getSession().getServletContext().getRealPath("/"))
+            }
             if (user.save(failOnError: true, flush: true)) {
                 flash.message = message(code: "profile.updated")
                 msg = flash.message

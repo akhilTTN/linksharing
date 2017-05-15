@@ -9,26 +9,29 @@ class SubscriptionController {
     def index() {}
 
     def save(Integer id) {
-        User user= session.user
-        subscriptionService.save(id,user)
+        User user = session.user
+        subscriptionService.save(id, user)
     }
 
-    def update(Integer id, String serious) {
-        Subscription subscription = Subscription.findByUserAndTopic(session.user, Topic.get(id))
-        if (subscription && serious) {
-            if (Seriousness.getEnum(serious) != null) {
-                subscription.seriousness = Seriousness.getEnum(serious)
-                if (subscription.save(flush: true, failOnError: true)) {
-                    render "Subscription saved successfully"
-                } else {
-                    render "Error saving subscription"
-                }
+    def update(long id, String seriousness) {
+//        println "*****************************************************************"
+        Subscription subscription = Subscription.get(id)
+        def seriousness1 = Seriousness.getEnum(seriousness)
+        log.info("+++++++++++++++++ $seriousness1 $id")
+        if (subscription != null && seriousness1 instanceof Seriousness) {
+            subscription.seriousness = seriousness1
+            subscription.save(flush: true, failOnError: true)
+            if (subscription.hasErrors()) {
+                log.info("${subscription.errors.allErrors}")
+//                render "${subscription.errors.allErrors}"
+                return  "Error"
             } else {
-                render "Proper Seriousness string not provided"
+                log.info("$subscription is updated")
+//                render "$subscription is updated"
+                return  "Error"
             }
-
         } else {
-            render "Subscription not found Or seriousness not found"
+            return  "subscription can't be updated"
         }
     }
 
@@ -49,7 +52,7 @@ class SubscriptionController {
         redirect(controller: 'user', action: 'index')
     }
 
-    def allSubscribedUsers(){
+    def allSubscribedUsers() {
         println("hello from subscribed users")
         Topic topic = Topic.get(1)
         def list = topic.getSubscribedUsers(topic)

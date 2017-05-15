@@ -1,5 +1,7 @@
 package linksharing
 
+import com.demo.linksharing.Resource
+import com.demo.linksharing.Topic
 import com.demo.linksharing.User
 
 class AdminController {
@@ -16,6 +18,18 @@ class AdminController {
         log.info("----------------------------------------${user}")
         user.active = !user.active
         user.save(flush: true, failOnError: true, validate: false)
+    }
+
+    def showAllTopic(){
+        List<Topic> topicList = Topic.findAll()
+        render view:"topicList", model: ["topics":topicList]
+    }
+
+
+    def showAllPosts(){
+        List<Resource> resourceList = Resource.findAll()
+//        render "${resourceList}"
+        render view:"postList", model: ["posts":resourceList]
     }
 
 }

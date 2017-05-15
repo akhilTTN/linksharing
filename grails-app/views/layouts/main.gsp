@@ -5,7 +5,7 @@
         <g:layoutTitle default="Linksharing"/>
     </title>
     <asset:stylesheet src="application.css"/>
-    %{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}%
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <g:layoutHead/>
 </head>
 
@@ -54,8 +54,8 @@
                                                         params='["id": "${session.user.id}"]'>Profile</g:link></li>
                         <g:if test="${session.user.admin}">
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin">Users</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Topics</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Posts</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/showAllTopic">Topics</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/showAllPosts">Posts</a></li>
                         </g:if>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="/login/logout">Logout
                         %{--<g:if test="${session.user}">

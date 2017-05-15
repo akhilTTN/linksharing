@@ -145,4 +145,18 @@ abstract class Resource {
     }
 
 
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "id=" + id +
+                ", version=" + version +
+                ", ratings=" + ratings +
+                ", readingItem=" + readingItem +
+                ", createdBy=" + createdBy +
+                ", topic=" + topic +
+                ", desctiption='" + desctiption + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
 }

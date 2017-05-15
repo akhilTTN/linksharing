@@ -6,6 +6,7 @@
             <div class="col-sm-4">
                 <pic:userImage id="${topic.createdBy.id}"/>
             </div>
+
             <div class="col-sm-8">
                 <div>
                     <g:link action="show" controller="topic" params='["id": "${topic.id}"]'>${topic.topicName}</g:link>
@@ -19,7 +20,8 @@
                     <div style="padding-left: 0px" class="col-md-5">
                         <div>${topic.createdBy}</div>
 
-                        <div><a onclick="changeSubscription(this)" name="${topic.id}"><ls:toggleSubscription id="${topic.id}"/></a></div>
+                        <div><a onclick="changeSubscription(this)" name="${topic.id}"><ls:toggleSubscription
+                                id="${topic.id}"/></a></div>
                         %{--<a href="" name="${topic.id}">subscribe</a>--}%
                     </div>
 
@@ -45,18 +47,30 @@
             <!-- <div class="row"> -->
         </div>
 
-        <div class="row pull-right">
-            <span>
-            <ls:showSeriousness topicId="${topic.id}"/>
-            <g:if test="${session.user.username == topic.createdBy.username}">
-                <ls:showVisibility topicId="${topic.id}"/>
-            </g:if></span>
-            <span style="display: inline-block;">
-                <a href="#"><span class="glyphicon glyphicon-envelope glyphsize"></span></a>
-                <a href="#"><span class="glyphicon glyphicon-edit glyphsize"></span></a>
-                <a href="#"><span class="glyphicon glyphicon-trash glyphsize"></span></a>
-            </span>
-        </div><br>
+        <div class="row">
+            <div class="col-xs-offset-3">
+                <span>
+                    <ls:showSeriousness topicId="${topic.id}"/>
+                    <g:if test="${session.user.username == topic.createdBy.username}">
+                        <ls:showVisibility topicId="${topic.id}"/>
+                    </g:if></span>
+
+                <div class="row">
+                    <div class="col-sm-9 pull-right " id="topicTextBox" style="display: none">
+                        <g:form controller="topic" action="update">
+                            <input type="text" value="${topic.topicName}" name="newTopicName"/>
+                            <input type="hidden" name="topicId" value="${topic.id}">
+                            <input type="submit" value="Update"/>
+                        </g:form>
+
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <ls:canEdit id="${topic.id}"/>
+                </div>
+            </div>
+        </div>
     </div>
 </g:each>
 
@@ -69,11 +83,28 @@
             url: '/topic/toggleSubscription',
             success: function () {
                 location.reload()
-            },
-            failure: function () {
-                location.reload()
-            }
+            }/*,
+             failure: function () {
+             location.reload()
+             }*/
         })
 
     }
+
+
+    /*function changeSeriousness(element) {
+     //        alert(element.name)
+     $.ajax({
+     type: 'POST',
+     data: {'id': element.name},
+     url: '/topic/changeSeriousness',
+     success: function () {
+     location.reload()
+     },
+     failure: function () {
+     location.reload()
+     }
+     })
+
+     }*/
 </script>

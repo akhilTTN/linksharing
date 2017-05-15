@@ -18,6 +18,7 @@ class SubscriptionInterceptor {
         } else {
             return true
         }*/
+        true
     }
 
     boolean after() { true }
