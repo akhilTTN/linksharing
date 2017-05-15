@@ -6,7 +6,7 @@ class ImageTagLib {
     static defaultEncodeAs = [taglib:'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static namespace = "pic"
-    def imageFile ={ attrs ->
+    /*def imageFile ={ attrs ->
         def userInstance = User.get(attrs.id)
         byte[] image = userInstance.photo
         if (!userInstance.photo ){
@@ -18,7 +18,7 @@ class ImageTagLib {
         outputStream << image
         outputStream.flush()
         outputStream.close()
-    }
+    }*/
 
     def userImage = { attrs, body ->
         User user = User.get(attrs.id)

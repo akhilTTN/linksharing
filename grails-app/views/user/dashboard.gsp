@@ -38,7 +38,11 @@
         </div>
 
         <div class="panel-body">
-            <g:render template="/topic/posts" model="[resourceList: resourceList]"/>
+            <div id="inboxMessages">
+                <g:render template="/topic/posts" model="[resourceList: resourceList]"/>
+            </div>
+            <util:remotePaginate controller='user' action="index" total="${resourceList.size()}"
+                                 update="inboxMessages" max="5" />
         </div>
     </div>
 </div>

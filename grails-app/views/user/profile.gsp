@@ -23,7 +23,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Subscriptions <a href="" class="pull-right">view All</a></div>
+        <div class="panel-heading">user profile Subscriptions <a href="" class="pull-right">view All</a></div>
 
         <div class="panel-body">
             <g:render template="/topic/show" model="[topics: subscriptionList]"/>

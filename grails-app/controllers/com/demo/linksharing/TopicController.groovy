@@ -6,6 +6,7 @@ import VO.InboxVO
 import VO.PostsVO
 import VO.TopicVO
 import VO.UserDetailsVO
+import com.demo.linksharing.util.Seriousness
 import com.demo.linksharing.util.Visibility
 
 class TopicController {
@@ -13,12 +14,11 @@ class TopicController {
     def topicService
 
 
-
     def index() {}
 
     def show(CO.ResourceSearchCO resourceSearchCO, long id) {
         Topic topic = Topic.read(id)
-        TopicVO topicVO = new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+        TopicVO topicVO = new TopicVO(id: topic.id, topicName: topic.topicName, visibility: topic.visibility,
                 createdBy: topic.createdBy, count: topic.resources.size(),
                 subsCount: topic.subscription.size())
 
@@ -29,11 +29,9 @@ class TopicController {
             log.info("topic is null.")
             flash.error = "topic doesn't exist."
             redirect(controller: "login", action: "index")
-        }
-        else if (topic.visibility == Visibility.PUBLIC) {
+        } else if (topic.visibility == Visibility.PUBLIC) {
             render view: 'topicShow', model: [topics: topicVO, posts: resourcesList, subscribedUsers: subscribedUsers]
-        }
-        else {
+        } else {
             if (topic.visibility == Visibility.PRIVATE) {
                 if (Subscription.findByUserAndTopic(session.user, topic)) {
                     render view: 'topicShow', model: [topics: topicVO, posts: resourcesList, subscribedUsers: subscribedUsers]
@@ -46,12 +44,11 @@ class TopicController {
     }
 
 
-
     def save(TopicCO topicCO) {
         log.info("${topicCO.toString()}")
-        render topicCO.toString()
-        /*topicService.createTopic(topicCO, session.user)
-        redirect(controller: 'user', action: 'index')*/
+//        render topicCO.toString()
+        topicService.createTopic(topicCO, session.user)
+        redirect(controller: 'user', action: 'index')
     }
 
 
@@ -64,23 +61,22 @@ class TopicController {
     }
 
 
-    def showTrending(){
+    def showTrending() {
         List topicVO = Topic.getTrendingTopics()
         log.info("$topicVO")
         render "$topicVO"
     }
 
 
-    def populate(){
+    def populate() {
         User.allCreatedTopics(session.user)
     }
 
-    def search(SearchCO searchCO){
-        List<InboxVO> searchResult =  Topic.getSearched(searchCO)
+    def search(SearchCO searchCO) {
+        List<InboxVO> searchResult = Topic.getSearched(searchCO)
         log.info("$searchResult")
-        render(view: "search", model: ["totalResult":searchResult.size(),"searchResult":searchResult,'topics':new TopicVO(name:  searchCO.q)])
+        render(view: "search", model: ["totalResult": searchResult.size(), "searchResult": searchResult, 'topics': new TopicVO(name: searchCO.q)])
     }
-
 
     /*def shareTopic(String email, long id) {
 
@@ -99,4 +95,22 @@ class TopicController {
         msg = flash.message
         redirect(controller: "user", action: "index", params: [message: msg])
     }*/
+
+    def toggleSubscription(long id) {
+        log.info("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk ${id}")
+        Topic topic = Topic.get(id)
+        Subscription subscription = Subscription.findByUserAndTopic(session.user, topic)
+        log.info("${topic} ^^^^^^^^^^^^^^^^^^^ ${subscription}")
+        if(subscription){
+            boolean b=subscription.delete(flush:true)
+            return b
+        }
+        else {
+            log.info("${topic}&&&&&&&&&&&&&&&&&&&&&&&&")
+            boolean b=topic.addToSubscription(new Subscription(user: session.user, topic: topic, seriousness: Seriousness.VERY_SERIOUS).save(flush:true))
+            log.info("${topic}&&&&&&&&&&&&&&&&&&&&&&&& ${b}")
+            return b
+        }
+
+    }
 }

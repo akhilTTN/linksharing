@@ -24,7 +24,7 @@ class User {
             } else
                 return true
         })
-        photo(nullable: true)
+        photoPath(nullable: true)
         admin(nullable: true)
         active(nullable: true)
         confirmPassword(blank: true, nullable: true, validator: { val, obj ->
@@ -40,7 +40,7 @@ class User {
     String email
     String username
     String password
-    Byte[] photo
+    String photoPath
     Boolean admin
     Boolean active
     String confirmPassword
@@ -57,7 +57,7 @@ class User {
 
 
     static mapping = {
-        photo(sqlType: 'longBlob')
+//        photo(sqlType: 'longBlob')
         sort id: 'desc'
         subscription lazy: false
     }
@@ -79,9 +79,9 @@ takes Long id and Boolean isRead
 - If value returned by executeUpdate is 0 then render error else render success
 */
 
-    def getUnReadResources(SearchCO searchCO) {
+    def getUnReadResources(Map params,SearchCO searchCO = null) {
         List<PostsVO> PostsVOList = []
-        List result = ReadingItem.createCriteria().list {
+        def result = ReadingItem.createCriteria().list(params) {
             createAlias("resource", "r", JoinType.LEFT_OUTER_JOIN)
             projections {
 //                property('r.id')
@@ -92,22 +92,31 @@ takes Long id and Boolean isRead
             }
 //            resultTransform (Transformers.aliasToBean(ResourceDTO))
             if (searchCO && searchCO.q) {
-                ilike("r.description", "%${searchCO.q}%")
+                ilike("r.desctiption", "%${searchCO.q}%")
             }
             eq('isRead', false)
             eq('user', this)
-            maxResults 5
+            maxResults 2
         }
         result.each {
             PostsVOList.add(new PostsVO(topicName: it[0].topicName, resourceID: it[1],
-                    createdBy: it[3], desctiption: it[2],topicID: it[0].id))
+                    createdBy: it[3], desctiption: it[2], topicID: it[0].id))
         }
         println(PostsVOList)
         PostsVOList
     }
 
-
-
+    /* static List getUnReadResources(Map params) {
+         def list = ReadingItem.createCriteria().list(params) {
+             projections {
+                 property('resource')
+             }
+             eq('user', this)
+             eq('isRead',false)
+ //            order("dateCreated", "desc")
+         }
+         list
+     }*/
 
 
     static def getSubscribedTopic(User user) {
@@ -123,19 +132,19 @@ takes Long id and Boolean isRead
 
         subscriptionList.each {
             Topic topic = it[0]
-            subscriptions.add(new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+            subscriptions.add(new TopicVO(id: topic.id, topicName: topic.topicName, visibility: topic.visibility,
                     createdBy: topic.createdBy, count: topic.resources.size(), subsCount: topic.subscription.size()))
         }
         return subscriptions
     }
 
 
-    static def allCreatedTopics(User user){
-        List<TopicVO> topicsCreated =[]
+    static def allCreatedTopics(User user) {
+        List<TopicVO> topicsCreated = []
         List<Topic> list = Topic.findAllByCreatedBy(user)
         list.each {
             Topic topic = it
-            topicsCreated.add(new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+            topicsCreated.add(new TopicVO(id: topic.id, topicName: topic.topicName, visibility: topic.visibility,
                     createdBy: topic.createdBy, count: topic.resources.size(), subsCount: topic.subscription.size()))
 
         }
@@ -148,8 +157,8 @@ takes Long id and Boolean isRead
         List<Resource> list = Resource.findAllByCreatedBy(user)
         list.each {
             Resource resource = it
-            allPosts.add(new PostsVO(resourceID: resource.id,desctiption: resource.desctiption,
-                    topicID: resource.topicId,topicName: resource.topic.topicName,createdBy: resource.createdBy))
+            allPosts.add(new PostsVO(resourceID: resource.id, desctiption: resource.desctiption,
+                    topicID: resource.topicId, topicName: resource.topic.topicName, createdBy: resource.createdBy))
         }
         allPosts
     }

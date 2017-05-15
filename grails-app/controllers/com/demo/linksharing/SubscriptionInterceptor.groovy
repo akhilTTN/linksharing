@@ -4,11 +4,11 @@ package com.demo.linksharing
 class SubscriptionInterceptor {
 
     SubscriptionInterceptor() {
-        match(action: 'save')
+//        match(action: 'save')
     }
 
     boolean before() {
-        User user = session.user
+        /*User user = session.user
         Topic topic = Topic.get(params.id)
         def isSubscribed = Subscription.findByTopicAndUser(topic, user)
         if (isSubscribed) {
@@ -17,7 +17,7 @@ class SubscriptionInterceptor {
             return false
         } else {
             return true
-        }
+        }*/
     }
 
     boolean after() { true }

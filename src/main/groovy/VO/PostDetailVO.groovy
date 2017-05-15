@@ -1,5 +1,8 @@
 package VO
 
+import com.demo.linksharing.LinkResource
+import com.demo.linksharing.Resource
+
 /**
  * Created by akhil on 14/5/17.
  */
@@ -24,5 +27,14 @@ class PostDetailVO {
                 ", updated=" + updated +
                 ", resourceID=" + resourceID +
                 '}';
+    }
+
+
+    boolean isLinkResource(){
+        Resource resource= Resource.get(resourceID)
+        if(resource instanceof LinkResource)
+            return true
+        else
+            return false
     }
 }

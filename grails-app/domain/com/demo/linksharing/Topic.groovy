@@ -18,6 +18,8 @@ class Topic {
         visibility(nullable: false)
     }
 
+    static transients = ['name']
+
     String topicName
     Date dateCreated
     Date lastUpdated
@@ -26,7 +28,7 @@ class Topic {
     static belongsTo = [createdBy: User]
     static hasMany = [subscription: Subscription, resources: Resource]
 
-    def afterInsert() {
+    /*def afterInsert() {
         Topic.withNewSession {
             Subscription subscription = new Subscription(user: this.createdBy, topic: this, seriousness: Seriousness.VERY_SERIOUS)
             if (!subscription.save(flush: true, failOnError: true)) {
@@ -35,7 +37,7 @@ class Topic {
                 log.info " Subscription ${subscription} saved successfully"
             }
         }
-    }
+    }*/
 
     /*static List<TopicVO> getTrendingTopic() {
 
@@ -122,7 +124,7 @@ class Topic {
         }
         list.each {
             Topic topic = it[0]
-            topicVOS.add(new TopicVO(id: topic.id, name: topic.topicName, visibility: topic.visibility,
+            topicVOS.add(new TopicVO(id: topic.id, topicName: topic.topicName, visibility: topic.visibility,
                     createdBy: topic.createdBy, count: it[1], subsCount: topic.subscription.size()))
         }
         topicVOS
@@ -133,11 +135,11 @@ class Topic {
 
 
 
-    static namedQueries = {
+    /*static namedQueries = {
         names { String name ->
             eq "topicName", name
         }
-    }
+    }*/
 
     static mapping = {
         sort topicName: 'asc'

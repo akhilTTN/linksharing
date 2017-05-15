@@ -4,12 +4,12 @@ package com.demo.linksharing
 class ResourceInterceptor {
 
     ResourceInterceptor() {
-        match(action:'delete')
+//        match(action:'delete')
 
     }
 
     boolean before() {
-        User loggedInUser = session.user
+       /* User loggedInUser = session.user
         Resource resource = Resource.get(params.id)
         if(resource) {
             if (loggedInUser.admin || resource.createdBy.username.equals(loggedInUser.username)) {
@@ -23,7 +23,8 @@ class ResourceInterceptor {
         else{
             render("Resource not found")
             return false
-        }
+        }*/
+        true
     }
 
     boolean after() { true }

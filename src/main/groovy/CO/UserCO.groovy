@@ -1,6 +1,7 @@
 package CO
 
 import grails.validation.Validateable
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Created by akhil on 11/5/17.
@@ -12,7 +13,7 @@ class UserCO implements Validateable{
     String username
     String password;
 //    boolean active;
-    byte[] photo;
+    MultipartFile photo;
 //    boolean admin
     String confirmPassword
 
@@ -20,10 +21,11 @@ class UserCO implements Validateable{
 
         email(unique: true, blank: false, nullable: false, email: true)
         username(unique: true)
-        password(blank: false, nullable: false, size: 5..15)
+        password(blank: true, nullable: true, size: 5..15)
         firstName(blank: false, nullable: false)
         lastName(blank: false, nullable: false)
         photo(nullable: true)
+        confirmPassword(nullable: true, blank: true)
     }
 
     @Override
@@ -34,7 +36,7 @@ class UserCO implements Validateable{
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", photo=" + Arrays.toString(photo) +
+//                ", photo=" + Arrays.toString(photo) +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
     }

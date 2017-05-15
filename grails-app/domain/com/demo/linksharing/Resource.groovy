@@ -49,7 +49,7 @@ abstract class Resource {
             eq('resource', Resource.get(resourceId))
         }
         println(ratingInfoVO)
-        if (ratingInfoVO[0] != 0){
+        if (ratingInfoVO[0] != 0) {
             new RatingInfoVO(totalVotes: ratingInfoVO[0], averageScore: ratingInfoVO[1], totalScore: ratingInfoVO[2])
         }
     }
@@ -143,9 +143,6 @@ abstract class Resource {
         }
         recentPost
     }
-
-
-
 
 
 }

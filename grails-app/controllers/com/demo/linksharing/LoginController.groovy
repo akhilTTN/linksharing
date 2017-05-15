@@ -5,6 +5,8 @@ import CO.UserCO
 
 class LoginController {
 
+    def userService
+
     def index() {
 //        session["user"] = User.get(1)
         /*if (session.user) {
@@ -43,8 +45,9 @@ class LoginController {
     //todo
     def register(UserCO userCO) {
         log.info("${userCO}")
-        User user = new User(firstName: userCO.firstName, lastName: userCO.lastName,photo: userCO.photo, email: userCO.email,
-                userName: userCO.username, password: userCO.password, confirmPassword: userCO.confirmPassword)
+        String photoPath = userService.upload(userCO.username,userCO.photo, request.getSession().getServletContext().getRealPath("/"))
+        User user = new User(firstName: userCO.firstName, lastName: userCO.lastName,photoPath: photoPath, email: userCO.email,
+                username: userCO.username, password: userCO.password, confirmPassword: userCO.confirmPassword)
         user.save(failOnError: true, flush: true)
         if (user.hasErrors()) {
             flash.error = "sorry you can't be registered."

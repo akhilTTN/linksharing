@@ -21,18 +21,19 @@
                     <g:select name="visibility" from="${Visibility.values()}" class="form-control"
                               defaultLabel="Visibility" id="visibility"/>
                 </div>
+
                 <div class="col-md-6">
-                <g:form class="search-form" controller="topic" action="search">
-                    <div class="form-group has-feedback">
-                        %{--<label class="sr-only">Search</label>--}%
-                        <g:hiddenField name="id" value=""/>
-                        <g:hiddenField name="max" value="10"/>
-                        <g:hiddenField name="offset" value="0"/>
-                        <input style="border-radius: 20px" type="text" class="form-control" name="q" id="q"
-                               placeholder="search">
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                    </div>
-                </g:form>
+                    <g:form class="search-form" controller="topic" action="search">
+                        <div class="form-group has-feedback">
+                            %{--<label class="sr-only">Search</label>--}%
+                            <g:hiddenField name="id" value=""/>
+                            <g:hiddenField name="max" value="10"/>
+                            <g:hiddenField name="offset" value="0"/>
+                            <input style="border-radius: 20px" type="text" class="form-control" name="q" id="q"
+                                   placeholder="search">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </g:form>
                 </div>
             </div>
             %{--</div>--}%
@@ -61,7 +62,7 @@
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.active}</td>
-                    <td>Activate</td>
+                    <td><button onclick="toggleActivate(this)" name="${user.id}"><ls:toggleAtivateButton id="${user.id}"/></button></td>
                     %{--<td><button class="btn btn-success" >update</button></td>--}%
                 </tr></g:each>
             </tbody>
@@ -69,6 +70,19 @@
         %{--</div>--}%
     </div>
 </div>
+<script type="text/javascript">
+    function toggleActivate(element) {
+//        alert(element.name)
+        $.ajax({
+            type: 'POST',
+            data: {id: element.name},
+            url: '/admin/toggleActive',
+            success: function () {
+                location.reload()
+            }
 
+        })
+    }
+</script>
 </body>
 </html>

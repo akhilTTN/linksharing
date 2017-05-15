@@ -10,7 +10,7 @@ class SubscriptionController {
 
     def save(Integer id) {
         User user= session.user
-        render subscriptionService.save(id,user)
+        subscriptionService.save(id,user)
     }
 
     def update(Integer id, String serious) {

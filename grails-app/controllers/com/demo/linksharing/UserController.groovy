@@ -10,9 +10,14 @@ import VO.TopicVO
 import VO.UserDetailsVO
 import com.demo.linksharing.util.Visibility
 
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+
 class UserController {
 
     def index() {
+        params.max = 5
+        params.offset = 0
         User user = session.user
         UserDetailsVO userDetailsVO = new UserDetailsVO()
         userDetailsVO.userFullName = user.getName()
@@ -22,10 +27,15 @@ class UserController {
 //      profilePageVO.photo = session.user.photo
         userDetailsVO.userId = user.id
         List<TopicVO> subscriptionList = User.getSubscribedTopic(user)
-        List<PostsVO> messages = user.getUnReadResources()
+        List<PostsVO> messages = user.getUnReadResources(params)
         log.info("------------------------------------------ $messages")
         render view: 'dashboard', model: [users       : userDetailsVO, subscriptionList: subscriptionList,
                                           resourceList: messages, message: params.message]
+    }
+
+    def inbox() {
+        User user = session.user
+        render template: '/topic/posts', model: [messages: user.getUnReadResources()]
     }
 
 
@@ -54,16 +64,24 @@ class UserController {
 
     def image(Long userId) {
         User user = User.load(userId)
-        byte[] photo
-        if (!user?.photo) {
-            photo = assetResourceLocator.findAssetForURI('user.png').byteArray
+
+        String photoPath
+        if (!user?.photoPath) {
+            photoPath = assetResourceLocator.findAssetForURI('user.png').byteArray
         } else {
-            photo = user.photo
+            photoPath = user.photoPath
+            log.info("-----------------$photoPath----------------------")
+            File imageFile = new File(photoPath)
+            BufferedImage originalImage = ImageIO.read(imageFile);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(originalImage, "jpg", baos);
+            byte[] imageInByte = baos.toByteArray();
+            response.setHeader('Content-length', imageInByte.length.toString())
+            response.contentType = 'image/jpg' // or the appropriate image content type
+            response.outputStream << imageInByte
+            response.outputStream.flush()
         }
-        OutputStream out = response.getOutputStream()
-        out.write(photo)
-        out.flush()
-        out.close()
+
     }
 
 
@@ -142,8 +160,9 @@ class UserController {
                 user.lastName = co.lastName
             if (co.username)
                 user.username = co.username
-            if (user)
-                user.photo = co.photo
+            user.confirmPassword = user.password
+            //            if (user)
+            //                user.photoPath = co.photo   //todo
             if (user.save(failOnError: true, flush: true)) {
                 flash.message = message(code: "profile.updated")
                 msg = flash.message

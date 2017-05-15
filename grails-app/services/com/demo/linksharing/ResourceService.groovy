@@ -28,11 +28,14 @@ class ResourceService {
         }
     }
 
-    def createResource(LinkCO linkCO) {
-        log.info("${linkCO}")
-        Resource resource = new LinkResource(url: linkCO.url,description: linkCO.description,
-                topic: Topic.get(linkCO.id),createdBy: linkCO.createdBy)
+    def createResource(LinkCO linkco) {
+//        String s=""
+        log.info("${linkco}")
+//        s= "${linkco.toString()}"
+        Resource resource = new LinkResource(url: linkco.url,desctiption: linkco.description,
+                topic: Topic.get(linkco.id),createdBy: linkco.createdBy)
         log.info("${resource}")
+//        s=s+ "${resource}"
         resource.save(failOnError:true,flush:true)
         if(resource.hasErrors()){
             flash.error = "sorry resource can't be saved"
@@ -40,5 +43,7 @@ class ResourceService {
             log.info("resource successfully saved")
 //            flash.message = "resource successfully saved"
         }
+
+//        return s
     }
 }

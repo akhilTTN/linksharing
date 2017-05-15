@@ -3,8 +3,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-2">
-                <!--<span class="glyphicon glyphicon-user "></span>-->
-                <!-- <img src="../images/user_image.jpg"/> -->
+                %{--<pic:userImage id="${detailedPost.c}"--}%
             </div>
 
             <div class="col-sm-10 ">
@@ -56,11 +55,14 @@
             <span class="pull-right">
                 <a href="#" class="operations">Delete</a>
                 <a href="#" class="operations">Edit</a>
-                <g:link action="download" class="pull-right" controller="resource"
-                        params='["id": "${detailedPost.resourceID}"]'>Download</g:link>
-                %{--<a href="#" class="operations">Download</a>--}%
-                <a href="#" class="operations">View Full Site</a>
-
+                <g:if test="${detailedPost.isLinkResource()}">
+                    <g:link controller="resource" action="newLink" params='["id": "${resource.resourceID}"]' target="_blank">view full site</g:link>
+                </g:if>
+                <g:else>
+                    <g:link action="download" class="pull-right" controller="resource"
+                            params='["id": "${detailedPost.resourceID}"]'>Download</g:link>
+                </g:else>
+            %{--<a href="#" class="operations">Download</a>--}%
             </span>
         </div>
     </div>

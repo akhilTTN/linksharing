@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <div class="control-label col-sm-4"><label for="Username" class="pull-left">Username*</label></div>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control pull-right" name="userName" placeholder="enter the Username" /></div>
+                        <input type="text" class="form-control pull-right" name="username" placeholder="enter the Username" /></div>
                 </div>
                 <div class="form-group">
                     <div class="control-label col-sm-4"><label for="password" class="pull-left">Password*</label></div>

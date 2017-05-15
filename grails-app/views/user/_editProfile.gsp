@@ -24,7 +24,7 @@
                 <div class="control-label col-sm-4"><label class="pull-left">Username*</label></div>
 
                 <div class="col-sm-8">
-                    <input type="text" class="form-control pull-right" name="userName"
+                    <input type="text" class="form-control pull-right" name="username"
                            placeholder="enter the Username"/></div>
             </div>
 

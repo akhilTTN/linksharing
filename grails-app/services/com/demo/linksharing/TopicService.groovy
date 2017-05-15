@@ -47,6 +47,7 @@ class TopicService {
 
 
     def createTopic(TopicCO topicCO, User user) {
+//        return  "${topicCO.topicName}    &&&&&&&&&&&&&&&7 ${topicCO.visibility}"
         Topic topic = new Topic(topicName: topicCO.topicName,visibility: Visibility.getEnum(topicCO.visibility),createdBy: user)
         topic.save(flush:true,failOnError:true)
         // throw new IOException()

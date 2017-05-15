@@ -54,6 +54,7 @@ class ResourceController {
 
     def save(LinkCO linkCo) {
         linkCo.createdBy = session.user
+//        render "${linkCo.toString()}"
         resourceService.createResource(linkCo)
         redirect(controller: 'user', action: 'index')
     }
@@ -83,7 +84,7 @@ class ResourceController {
         file.transferTo(fileDest)
         fileCO.createdBy = session.user
         Resource resource = new DocumentResource(filePath: "${rootDir}/uploads/${file.originalFilename}",
-                description: fileCO.description, topic: Topic.get(fileCO.topicId), createdBy: fileCO.createdBy)
+                desctiption: fileCO.description, topic: Topic.get(fileCO.topicId), createdBy: fileCO.createdBy)
         resource.save(flush: true, failOnError: true)
         redirect controller: "user", action: "index"
     }
@@ -97,6 +98,11 @@ class ResourceController {
         response.setContentType("text/plain")
         response.outputStream << myBytes
 
+    }
+
+    def newLink(long id){
+        Resource resource = Resource.get(id)
+        redirect url:resource.url
     }
 
 

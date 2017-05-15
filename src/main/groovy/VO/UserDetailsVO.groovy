@@ -8,7 +8,7 @@ class UserDetailsVO {
     String userFullName
     int subscriptionCount
     int topicCount
-    byte[] photo
+    byte[] photo//todo
     long userId
 
 

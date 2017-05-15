@@ -7,7 +7,7 @@
 <body>
 <div class="col-md-5">
     <div class="panel panel-default">
-        <div class="panel-heading">Topic : ${topics.name}</div>
+        <div class="panel-heading">Topic : ${topics.topicName}</div>
 
         <div class="panel-body">
             <g:render template="show" model="[topics: topics]"/>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">User : ${topics.name}</div>
+        <div class="panel-heading">User : ${topics.topicName}</div>
 
         <div class="panel-body">
             %{--<g:each in="${subscribedUsers}" var="user">--}%
@@ -28,7 +28,7 @@
 <div class="col-md-7 col-sm-7 pull-right">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span>Posts : ${topics.name}</span>
+            <span>Posts : ${topics.topicName}</span>
             <g:form class="search-form col-md-4 pull-right" controller="topic" action="search" >
                 <div class="form-group has-feedback">
                     %{--<label class="sr-only">Search</label>--}%

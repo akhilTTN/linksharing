@@ -8,7 +8,7 @@ import com.demo.linksharing.util.Visibility
  */
 class TopicVO {
     long id
-    String name
+    String topicName
     Visibility visibility
     int count
     User createdBy
@@ -19,7 +19,7 @@ class TopicVO {
     public String toString() {
         return "TopicVO{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + topicName + '\'' +
                 ", visibility=" + visibility +
                 ", count=" + count +
                 ", createdBy=" + createdBy +

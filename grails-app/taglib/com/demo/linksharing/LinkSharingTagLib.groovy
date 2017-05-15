@@ -25,9 +25,33 @@ class LinkSharingTagLib {
         out << render(template: "/topic/posts", model: [resourceList: Resource.topPost()])
     }
 
+
+    def showSeriousness = { attrs, body ->
+        User user = session.user
+        Long topicId = attrs.topicId
+        if (user && topicId) {
+            Subscription subscription = Subscription.findByUserAndTopic(user, Topic.get(topicId))
+//user.getSubscription(topicId)
+// log.info("$subscription--------------------------------------------------------")
+            if (subscription) {
+                out << render(template: '/topic/serious', model: [subscription: subscription])
+            }
+        }
+    }
+
+    def showVisibility = { attrs, body ->
+        User user = session.user
+        Long topicId = attrs.topicId
+        if (user && topicId) {
+            Topic topic = Topic.get(topicId)
+            if (topic) {
+                out << render(template: '/topic/visibility', model: [topic: topic])
+            }
+        }
+    }
+
     def loggedInUser = { attr, body ->
         User user = session.user
-
         UserDetailsVO userDetailsVO = new UserDetailsVO()
         userDetailsVO.userFullName = user.getName()
         userDetailsVO.userName = user.username
@@ -112,6 +136,32 @@ class LinkSharingTagLib {
         }
         out << count
     }
+
+
+    def toggleSubscription = {attr->
+        long id = attr.id
+        User user = session.user
+        Topic topic= Topic.get(id)
+        Subscription subscription = Subscription.findByUserAndTopic(user, topic)
+        if(subscription)
+            out << "Unsubscribe"
+        else
+            out << "Subscribe"
+
+    }
+
+
+    def toggleAtivateButton= {attr->
+        long id = attr.id
+        User user = User.get(id)
+        if(user.active)
+            out << "Deactivate"
+        else
+            out << "Activate"
+
+    }
+
+
 
     /*def topiCreated = { attrs ->
         out << /<g:select name='id' from="${Topic.findAllByCreatedBy(session.user)}" optionKey='id' optionValue='name' class='form-control pull-right'

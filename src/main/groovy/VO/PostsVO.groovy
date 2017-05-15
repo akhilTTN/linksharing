@@ -1,5 +1,7 @@
 package VO
 
+import com.demo.linksharing.LinkResource
+import com.demo.linksharing.Resource
 import com.demo.linksharing.User
 
 /**
@@ -22,5 +24,12 @@ class PostsVO {
                 ", resourceID=" + resourceID +
                 ", createdBy=" + createdBy +
                 '}';
+    }
+
+    boolean linkResource(){
+        if(Resource.get(resourceID) instanceof LinkResource)
+           return false
+        else
+           return true
     }
 }

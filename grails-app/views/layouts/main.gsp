@@ -5,6 +5,7 @@
         <g:layoutTitle default="Linksharing"/>
     </title>
     <asset:stylesheet src="application.css"/>
+    %{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}%
     <g:layoutHead/>
 </head>
 
@@ -17,7 +18,13 @@
                     data-toggle="collapse" data-target="#myNavbar">
                 <span class="glyphicon glyphicon-menu-hamburger"></span>
             </button>
-            <a class="navbar-brand" href="#" style="color:black">Link Sharing</a>
+            <g:if test="${session.user}">
+                <a class="navbar-brand" href="#" style="color:black">Link Sharing</a>
+            </g:if>
+            <g:else>
+                <a class="navbar-brand" href="#" style="color:black">Link Sharing</a>
+            </g:else>
+
         </div>
 
         <div class="collapse navbar-collapse" id="myNavbar">
