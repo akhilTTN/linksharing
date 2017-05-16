@@ -19,3 +19,15 @@ if (typeof jQuery !== 'undefined') {
         });
     })(jQuery);
 }
+
+$(".editResource").on('click', function (event) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    $(this).closest('.myResource').find(".resourceEditDiv").show();
+});
+
+$(".myEdit").on('click', function (event) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    $(this).closest('.myTopic').find(".topicEditDiv").show();
+});

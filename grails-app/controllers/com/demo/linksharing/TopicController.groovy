@@ -1,11 +1,11 @@
 package com.demo.linksharing
 
-import CO.SearchCO
-import CO.TopicCO
-import VO.InboxVO
-import VO.PostsVO
-import VO.TopicVO
-import VO.UserDetailsVO
+import co.SearchCO
+import co.TopicCO
+import vo.InboxVO
+import vo.PostsVO
+import vo.TopicVO
+import vo.UserDetailsVO
 import com.demo.linksharing.util.Seriousness
 import com.demo.linksharing.util.Visibility
 
@@ -17,7 +17,7 @@ class TopicController {
 
     def index() {}
 
-    def show(CO.ResourceSearchCO resourceSearchCO, long id) {
+    def show(co.ResourceSearchCO resourceSearchCO, long id) {
         Topic topic = Topic.read(id)
         TopicVO topicVO = new TopicVO(id: topic.id, topicName: topic.topicName, visibility: topic.visibility,
                 createdBy: topic.createdBy, count: topic.resources.size(),
@@ -54,11 +54,23 @@ class TopicController {
 
 
     def topicDelete(Long id) {
-        User user = session.user
+        /*User user = session.user
         if (user) {
-            render topicService.deleteTopic(id, user)
-//        redirect(controller: 'login', action: 'index')
+            topicService.deleteTopic(id, user)
+        redirect(controller: 'user', action: 'index')
+        }*/
+
+        Topic topic = Topic?.load(id)
+        if(topic){
+            if(topic.createdBy.username == session.user.username){
+                topic.delete(flush:true)
+                flash.message = "Topic deleted"
+            }
+            else {
+                flash.error="Can not deletet topic"
+            }
         }
+        redirect(controller: 'user',action: 'index')
     }
 
 
@@ -114,6 +126,16 @@ class TopicController {
         }
 
     }
+
+    def editTopicName(String newTopicName, long topicID){
+        Topic topic = Topic.get(topicID)
+        topic.topicName = newTopicName
+        topic.save(flush:true)
+//        render "${topic.topicName}"
+        redirect(controller: 'user', action: 'index')
+    }
+
+
 
 
     /*def changeSeriousness(long id){

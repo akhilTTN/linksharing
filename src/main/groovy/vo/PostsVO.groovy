@@ -1,4 +1,4 @@
-package VO
+package vo
 
 import com.demo.linksharing.LinkResource
 import com.demo.linksharing.Resource

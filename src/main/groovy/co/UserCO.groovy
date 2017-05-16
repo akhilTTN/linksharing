@@ -1,4 +1,4 @@
-package CO
+package co
 
 import grails.validation.Validateable
 import org.springframework.web.multipart.MultipartFile

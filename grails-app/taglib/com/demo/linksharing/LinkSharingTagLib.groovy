@@ -1,6 +1,6 @@
 package linksharing
 
-import VO.UserDetailsVO
+import vo.UserDetailsVO
 import com.demo.linksharing.ReadingItem
 import com.demo.linksharing.Resource
 import com.demo.linksharing.Subscription
@@ -92,18 +92,32 @@ class LinkSharingTagLib {
 
     }
 
+    def isResourceEditable = { attrs ->
+        User user = session.user
+        if (attrs.id) {
+            Resource resource = Resource.get(attrs.id)
+            if (user.username == resource.createdBy.username) {
+                String url = createLink(controller: 'resource', action: 'edit', params: [resourceId: resource.id])
+                out << "<a class='editResource'>Edit</a>"
+            }
+        }
+
+
+    }
+
+
     def canEdit = { attr ->
         Topic topic = Topic.get(attr.id)
         User user = session.user
-        if(topic.createdBy.username == user.username)
-            out <<  """<span style="display: inline-block;">
-        <a href="#sendInvitation" data-toggle="modal"><span class="glyphicon glyphicon-envelope glyphsize"></span></a>
-        <a href="#"><span class="glyphicon glyphicon-edit glyphsize"></span></a>
-        <a href="#"><span class="glyphicon glyphicon-trash glyphsize"></span></a>
+        if (topic.createdBy.username == user.username)
+            out << """<span style="display: inline-block;">
+        <a href="#sendInvitation" data-toggle="modal"><span class="glyphicon glyphicon-envelope"></span></a>
+        <a class="myEdit"><span class="glyphicon glyphicon-edit"></span></a>
+        <a href="/topic/topicDelete?id=${attr.id}"><span class="glyphicon glyphicon-trash"></span></a>
         </span>"""
         else
             out << """<span style="display: inline-block;">
-        <a href="#"><span class="glyphicon glyphicon-envelope glyphsize"></span></a>
+        <a href="#sendInvitation" data-toggle="modal"><span class="glyphicon glyphicon-envelope "></span></a>
         </span>"""
     }
 
@@ -174,6 +188,14 @@ class LinkSharingTagLib {
         else
             out << "Activate"
 
+    }
+
+    def subscriber = { attr, body ->
+        User user = session.user
+        Topic topic = attr.topic
+        Subscription subscription = Subscription.findByUserAndTopic(user, topic)
+        if (subscription)
+            out << body()
     }
 
     /*def topiCreated = { attrs ->

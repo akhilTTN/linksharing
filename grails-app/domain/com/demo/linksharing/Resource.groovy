@@ -1,9 +1,9 @@
 package com.demo.linksharing
 
-import CO.ResourceSearchCO
-import VO.PostDetailVO
-import VO.PostsVO
-import VO.RatingInfoVO
+import co.ResourceSearchCO
+import vo.PostDetailVO
+import vo.PostsVO
+import vo.RatingInfoVO
 
 abstract class Resource {
 
@@ -48,7 +48,7 @@ abstract class Resource {
 //            eq('user',this)
             eq('resource', Resource.get(resourceId))
         }
-        println(ratingInfoVO)
+//        println(ratingInfoVO)
         if (ratingInfoVO[0] != 0) {
             new RatingInfoVO(totalVotes: ratingInfoVO[0], averageScore: ratingInfoVO[1], totalScore: ratingInfoVO[2])
         }
@@ -84,7 +84,7 @@ abstract class Resource {
             p.createdBy = resource.createdBy
             fResult.add(p)
         }
-        println(fResult)
+//        println(fResult)
         fResult
 
     }
@@ -99,7 +99,7 @@ abstract class Resource {
         PostDetailVO detailedPostVO = new PostDetailVO(resourceID: id, description: resource.desctiption,
                 ratings: ratingInfoVO.averageScore, updated: resource.lastUpdated,
                 username: resource.createdBy.username, fullName: resource.createdBy.name,
-                topicName: resource.topic.topicName)
+                topicName: resource.topic.topicName,topic: resource.topic)
         detailedPostVO
     }
 

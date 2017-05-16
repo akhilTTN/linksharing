@@ -1,6 +1,6 @@
 <!-- <div class="row"> -->
 <g:each in="${topics}" var="topic">
-    <div class="well">
+    <div class="well myTopic">
         <div class="row">
 
             <div class="col-sm-4">
@@ -70,8 +70,21 @@
                     <ls:canEdit id="${topic.id}"/>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-offset-5">
+                    <div class="topicEditDiv" style="display: none">
+                        <g:form controller="topic" action="editTopicName">
+                            <input type="text" name="newTopicName" id="123" value="${topic.topicName}"/>
+                            <input type="hidden" name="topicID" value="${topic.id}">
+                            <input type="submit" value="Update">
+                        </g:form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </g:each>
 
 <script type="text/javascript">

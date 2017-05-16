@@ -1,10 +1,9 @@
 package com.demo.linksharing
 
-import CO.TopicCO
+import co.TopicCO
 import com.demo.linksharing.util.Seriousness
 import com.demo.linksharing.util.Visibility
 import grails.transaction.Transactional
-import org.hibernate.Session
 
 @Transactional
 class TopicService {
@@ -16,7 +15,7 @@ class TopicService {
     }
 
     def deleteTopic(Long id, User user) {
-        Topic topic = Topic?.load(id)
+        /*Topic topic = Topic?.load(id)
         log.info("${topic}")
         log.info("${user}")
         if (topic) {
@@ -31,7 +30,7 @@ class TopicService {
 
         }
         return "user is   ${user.id}  & topic created by is ${topic.createdBy.id}"
-
+*/
     }
 
 

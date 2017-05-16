@@ -1,5 +1,5 @@
 <g:each in="${resourceList}" var="resource">
-    <div class="well">
+    <div class="well myResource">
         <div class="col-sm-2">
             <!--<span class="glyphicon glyphicon-user "></span>-->
             <!-- %{--<img src="../images/user_image.jpg"/>--}% -->
@@ -17,6 +17,24 @@
             <div class="">
                 ${resource.desctiption}
             </div>
+        </div>
+
+        <g:if test="${session.user}">
+        <div class="row">
+            <div class="col-xs-offset-10">
+                <a><ls:isResourceEditable id="${resource.resourceID}"/></a>
+                <g:if test="${session.user.username == resource.createdBy.username}">
+                    <g:link controller="resource" action="delete" params='["id":"${resource.resourceID}"]'>Delete</g:link>
+                </g:if>
+            </div>
+        </div>
+        </g:if>
+        <div class="resourceEditDiv col-xs-offset-4" style="display: none">
+            <g:form controller="resource" action="editResourceDescription">
+                <textarea name="newDescription" id="123" cols="30" rows="5">${resource.desctiption}</textarea>
+                <input type="hidden" name="resourceID" value="${resource.resourceID}">
+                <input type="submit" value="Update">
+            </g:form>
         </div>
 
         <div>
@@ -48,4 +66,5 @@
         </div>
     </div>
 </g:each>
+<g:paginate total="${resourceList.size()}" max="5"/>
 

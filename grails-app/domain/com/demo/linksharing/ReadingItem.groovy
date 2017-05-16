@@ -17,8 +17,8 @@ class ReadingItem {
 
 
     static def changeIsRead(Long id, Boolean isRead,long user_Id) {
-        int flag = ReadingItem.executeUpdate("update ReadingItem set isRead=:isRead where resource_id =:id and user_id=:",
-                [isRead: isRead, id: id,user_id:user_Id])
+        int flag = ReadingItem.executeUpdate("update ReadingItem set isRead=:isRead where resource_id =:id and user_id=:user_Id",
+                [isRead: isRead, id: id,user_Id:user_Id])
         if (flag == 0){
             return "error"
         }

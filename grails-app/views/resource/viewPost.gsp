@@ -6,7 +6,8 @@
 
 <body>
 <div class="col-md-7">
-    <g:render template="post" model="[post: post]"/>
+    %{--<g:render template="post" model="[post: post]"/>--}%
+    <g:render template="post"/>
 </div>
 
 <div class="col-md-5 pull-right">

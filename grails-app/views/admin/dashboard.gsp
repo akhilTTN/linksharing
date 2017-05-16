@@ -1,4 +1,4 @@
-<%@ page import="com.demo.linksharing.util.Visibility" %>
+<%@ page import="com.demo.linksharing.User; com.demo.linksharing.util.Visibility" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,11 +62,13 @@
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.active}</td>
-                    <td><button onclick="toggleActivate(this)" name="${user.id}"><ls:toggleAtivateButton id="${user.id}"/></button></td>
+                    <td><button onclick="toggleActivate(this)" name="${user.id}"><ls:toggleAtivateButton
+                            id="${user.id}"/></button></td>
                     %{--<td><button class="btn btn-success" >update</button></td>--}%
                 </tr></g:each>
             </tbody>
         </table>
+        <g:paginate total="${User.count()}" max="5"/>
         %{--</div>--}%
     </div>
 </div>
@@ -80,7 +82,6 @@
             success: function () {
                 location.reload()
             }
-
         })
     }
 </script>

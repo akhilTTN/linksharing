@@ -25,7 +25,7 @@
 
 <div class="col-md-7">
     <g:render template="editProfile"/>
-    <g:render template="forgotPassword"/>
+    <g:render template="changePassword"/>
 </div>
 </body>
 </html>

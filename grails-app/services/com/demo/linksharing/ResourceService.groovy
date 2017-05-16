@@ -1,6 +1,6 @@
 package com.demo.linksharing
 
-import CO.LinkCO
+import co.LinkCO
 import grails.transaction.Transactional
 
 @Transactional
@@ -10,7 +10,7 @@ class ResourceService {
 
     }
 
-    def deleteResourceService(long id) {
+    /*def deleteResourceService(long id) {
         Resource resource = Resource.load(id)
         if (resource) {
             try {
@@ -26,7 +26,7 @@ class ResourceService {
         } else {
             return "Resource not found"
         }
-    }
+    }*/
 
     def createResource(LinkCO linkco) {
 //        String s=""

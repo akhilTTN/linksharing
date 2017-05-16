@@ -24,7 +24,8 @@
                     <input type="password" class="form-control pull-right" name="password" placeholder="enter the password" /></div>
                 </div>
                 <div class="form-group" style="padding-left:15px;padding-right:15px">
-                    <a href="forgorPassword">forgot passowrd</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#forgetPassword">Forgot Password</button>
                     <a href="user"><button type="submit" class="btn btn-info pull-right">Login</button></a>
                 </div>
             </g:form>

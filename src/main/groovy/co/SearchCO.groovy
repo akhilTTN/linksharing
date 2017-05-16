@@ -1,4 +1,4 @@
-package CO
+package co
 
 /**
  * Created by akhil on 9/5/17.
@@ -12,13 +12,13 @@ class SearchCO {
 
 
     @Override
-    public String toString() {
+     String toString() {
         return "SearchCO{" +
                 "q='" + q + '\'' +
                 ", max=" + max +
                 ", offset=" + offset +
                 ", order='" + order + '\'' +
                 ", sort='" + sort + '\'' +
-                '}';
+                '}'
     }
 }

@@ -1,10 +1,8 @@
 package com.demo.linksharing
 
-import CO.SearchCO
-import VO.InboxVO
-import VO.PostsVO
-import VO.SubscriptionVO
-import VO.TopicVO
+import co.SearchCO
+import vo.PostsVO
+import vo.TopicVO
 import org.hibernate.sql.JoinType
 
 class User {
@@ -79,9 +77,9 @@ takes Long id and Boolean isRead
 - If value returned by executeUpdate is 0 then render error else render success
 */
 
-    def getUnReadResources(Map params,SearchCO searchCO = null) {
+    def getUnReadResources(/*Map params,*/SearchCO searchCO = null) {
         List<PostsVO> PostsVOList = []
-        def result = ReadingItem.createCriteria().list(params) {
+        def result = ReadingItem.createCriteria().list() {
             createAlias("resource", "r", JoinType.LEFT_OUTER_JOIN)
             projections {
 //                property('r.id')
@@ -96,13 +94,13 @@ takes Long id and Boolean isRead
             }
             eq('isRead', false)
             eq('user', this)
-            maxResults 2
+            maxResults 5
         }
         result.each {
             PostsVOList.add(new PostsVO(topicName: it[0].topicName, resourceID: it[1],
                     createdBy: it[3], desctiption: it[2], topicID: it[0].id))
         }
-        println(PostsVOList)
+//        println(PostsVOList)
         PostsVOList
     }
 

@@ -15,7 +15,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Subscriptions <a href="" class="pull-right">view All</a></div>
+        <div class="panel-heading">Subscriptions <a href="/subscription/viewAllSubscription" class="pull-right">view All</a></div>
 
         <div class="panel-body">
             <g:render template="/topic/show" model="[topics: subscriptionList]"/>
@@ -41,8 +41,8 @@
             <div id="inboxMessages">
                 <g:render template="/topic/posts" model="[resourceList: resourceList]"/>
             </div>
-            <util:remotePaginate controller='user' action="index" total="${resourceList.size()}"
-                                 update="inboxMessages" max="5" />
+            %{--<util:remotePaginate controller='user' action="index" total="${resourceList.size()}"
+                                 update="inboxMessages" max="5" />--}%
         </div>
     </div>
 </div>

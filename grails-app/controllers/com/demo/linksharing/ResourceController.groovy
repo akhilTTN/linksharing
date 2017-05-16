@@ -1,10 +1,10 @@
 package com.demo.linksharing
 
-import CO.FileCO
-import CO.LinkCO
-import CO.ResourceSearchCO
-import VO.PostDetailVO
-import VO.RatingInfoVO
+import co.FileCO
+import co.LinkCO
+import co.ResourceSearchCO
+import vo.PostDetailVO
+import vo.RatingInfoVO
 import com.demo.linksharing.util.Visibility
 import org.springframework.web.multipart.MultipartFile
 
@@ -18,7 +18,12 @@ class ResourceController {
     }
 
     def delete(long id) {
-        render resourceService.deleteResourceService(id)
+        /*render resourceService.deleteResourceService(id)*/
+        Resource resource = Resource.load(id)
+        if (resource) {
+            resource.delete(flush: true)
+            redirect(controller: 'user', action: 'index')
+        }
     }
 
     def search(ResourceSearchCO resourceSearchCO) {
@@ -61,8 +66,12 @@ class ResourceController {
 
 
     def updateReadItem(Long id, Boolean isRead) {
-        String str = ReadingItem.changeIsRead(id, isRead)
-        render "${str}"
+        String msg =ReadingItem.changeIsRead(id, isRead)
+        if(msg.equals("error"))
+            flash.error=msg
+        else
+            flash.message=msg
+        redirect controller: 'user', action: 'index'
     }
 
     def viewPost(long id) {
@@ -90,19 +99,38 @@ class ResourceController {
     }
 
 
-    def download(long id){
+    def download(long id) {
         Resource resource = Resource.get(id)
         log.info("$resource.filePath")
-        response.setHeader("Content-Disposition","attachment;filename=myfile")
-        byte[] myBytes = new File ("${resource.filePath}").bytes
+        response.setHeader("Content-Disposition", "attachment;filename=myfile")
+        byte[] myBytes = new File("${resource.filePath}").bytes
         response.setContentType("text/plain")
         response.outputStream << myBytes
 
     }
 
-    def newLink(long id){
+    def newLink(long id) {
         Resource resource = Resource.get(id)
-        redirect url:resource.url
+        redirect url: resource.url
+    }
+
+    def editResourceDescription(String newDescription, long resourceID) {
+        Resource resource = Resource.get(resourceID)
+        if (resource) {
+            resource.desctiption = newDescription
+            resource.save(flush: true)
+            flash.message = "Resource description Updated"
+        }
+        redirect controller: 'user', action: 'index'
+    }
+
+    def rateResource(long id , int score){
+        Resource resource = Resource.get(id)
+        ResourceRating resourceRating = ResourceRating.findByResource(resource)
+        resourceRating.score=score
+        resourceRating.save(flush:true)
+        redirect(controller: 'resource',action: 'viewPost', params:[id:id])
+
     }
 
 

@@ -1,13 +1,11 @@
 package com.demo.linksharing
 
-import CO.SearchCO
-import CO.UpdatePasswordCO
-import CO.UserCO
-import VO.InboxVO
-import VO.PostsVO
-import VO.SubscriptionVO
-import VO.TopicVO
-import VO.UserDetailsVO
+import co.SearchCO
+import co.UpdatePasswordCO
+import co.UserCO
+import vo.PostsVO
+import vo.TopicVO
+import vo.UserDetailsVO
 import com.demo.linksharing.util.Visibility
 
 import javax.imageio.ImageIO
@@ -18,8 +16,8 @@ class UserController {
     def userService
 
     def index() {
-        params.max = 5
-        params.offset = 0
+        /*params.max = 5
+        params.offset = 0*/
         User user = session.user
         UserDetailsVO userDetailsVO = new UserDetailsVO()
         userDetailsVO.userFullName = user.getName()
@@ -29,16 +27,17 @@ class UserController {
 //      profilePageVO.photo = session.user.photo
         userDetailsVO.userId = user.id
         List<TopicVO> subscriptionList = User.getSubscribedTopic(user)
-        List<PostsVO> messages = user.getUnReadResources(params)
+//        List<PostsVO> messages = user.getUnReadResources(params)
+        List<PostsVO> messages = user.getUnReadResources()
         log.info("------------------------------------------ $messages")
-        render view: 'dashboard', model: [users       : userDetailsVO, subscriptionList: subscriptionList,
+        render view: 'dashboard', model: [users: userDetailsVO, subscriptionList: subscriptionList,
                                           resourceList: messages, message: params.message]
     }
 
-    def inbox() {
+    /*def inbox() {
         User user = session.user
         render template: '/topic/posts', model: [messages: user.getUnReadResources()]
-    }
+    }*/
 
 
     def show(int id) {
@@ -90,7 +89,7 @@ class UserController {
     def unread(SearchCO searchCO) {
         log.info("${searchCO.q}")
         List list = session.user.getUnReadResources()
-        println(list)
+//        println(list)
         render(list)
     }
 

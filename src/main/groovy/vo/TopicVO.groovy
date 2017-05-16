@@ -1,4 +1,4 @@
-package VO
+package vo
 
 import com.demo.linksharing.User
 import com.demo.linksharing.util.Visibility

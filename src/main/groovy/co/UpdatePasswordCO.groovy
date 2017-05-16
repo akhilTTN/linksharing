@@ -1,4 +1,4 @@
-package CO
+package co
 
 /**
  * Created by akhil on 14/5/17.

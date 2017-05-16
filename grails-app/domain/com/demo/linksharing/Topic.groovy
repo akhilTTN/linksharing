@@ -1,10 +1,9 @@
 package com.demo.linksharing
 
-import CO.SearchCO
-import VO.PostsVO
-import VO.TopicVO
-import VO.UserDetailsVO
-import com.demo.linksharing.util.Seriousness
+import co.SearchCO
+import vo.PostsVO
+import vo.TopicVO
+import vo.UserDetailsVO
 import com.demo.linksharing.util.Visibility
 import groovy.transform.ToString
 import org.hibernate.sql.JoinType
@@ -70,7 +69,6 @@ class Topic {
             eq('topic', topic)
         }
 
-        println(allSubscribedUsers)
         allSubscribedUsers.each {
             User user = it
             allSubsUsers.add(new UserDetailsVO(userName: user.username,
@@ -106,7 +104,6 @@ class Topic {
             searchResult.add(new PostsVO(topicName: it[1], resourceID: it[2],
                     createdBy: it[4], desctiption: it[3],topicID: it[0]))
         }
-        println("akkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk $searchResult}")
         searchResult
     }
 

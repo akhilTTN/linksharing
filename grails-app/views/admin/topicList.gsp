@@ -1,4 +1,4 @@
-<%@ page import="com.demo.linksharing.util.Visibility" %>
+<%@ page import="com.demo.linksharing.Topic; com.demo.linksharing.util.Visibility" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,6 +56,8 @@
             </tbody>
         </table>
         %{--</div>--}%
+        <g:paginate total="${Topic.count()}" max="5" />
+    </div>
     </div>
 </div>
 %{--<script type="text/javascript">

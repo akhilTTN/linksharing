@@ -1,11 +1,12 @@
 package com.demo.linksharing
 
-import CO.UserCO
+import co.UserCO
 
 
 class LoginController {
 
     def userService
+    def mailService
 
     def index() {
 //        session["user"] = User.get(1)
@@ -27,12 +28,12 @@ class LoginController {
                 flash.message = message(code: "successful.login", args: [user.username])
                 redirect(action: "index", params: [message: flash.message])
             } else {
-                flash.message = message(code: "account.not.active", args: [user.username]);
+                flash.message = message(code: "account.not.active", args: [user.username])
                 redirect controller: 'login', action: 'index'
             }
         } else {
 //            render (flash.error = "user not found")
-            flash.error = "User not found"
+//            flash.error = "User not found"
             render(view: "/user/regIndex")
         }
 
@@ -63,6 +64,33 @@ class LoginController {
         session.invalidate()
         forward(action: "index")
 
+    }
+
+    def forgotPassword(String email){
+        def msg
+        User user = User.findByEmail(email)
+        if(user) {
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6)
+            mailService.sendMail {
+                from "akhil@tothenew.com"
+                to email
+//            cc "akhilsr20@gmail.com"
+                subject "Forgot password"
+                text "Your password has been changed. Log in using ${uuid}. Change the password after you log in for security purpose"
+
+            }
+
+            user.password = uuid
+            user.save(flush: true)
+            flash.message = message(code: "password.changed")
+            msg = flash.message
+//            redirect(controller: "user", action: "index", params: [message: msg])
+        }
+        else {
+            flash.message = message(code: "user.not.found", args: ["${email}"])
+            msg = flash.message
+        }
+        redirect(controller: "user", action: "index", params: [message: msg])
     }
 
 

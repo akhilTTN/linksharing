@@ -1,4 +1,4 @@
-<%@ page import="com.demo.linksharing.LinkResource; com.demo.linksharing.util.Visibility" %>
+<%@ page import="com.demo.linksharing.Resource; com.demo.linksharing.LinkResource; com.demo.linksharing.util.Visibility" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,21 +65,22 @@
             </tbody>
         </table>
         %{--</div>--}%
+        <a onclick="paginate(this)"><g:paginate total="${Resource.count()}" max="10"/></a>
     </div>
 </div>
-%{--<script type="text/javascript">
-    function toggleActivate(element) {
+<script type="text/javascript">
+    function paginate(element) {
 //        alert(element.name)
         $.ajax({
             type: 'POST',
-            data: {id: element.name},
-            url: '/admin/toggleActive',
+//            data: {id: element.name},
+            url: '/admin/index',
             success: function () {
-                location.reload()
+//                location.reload()
             }
 
         })
     }
-</script>--}%
+</script>
 </body>
 </html>

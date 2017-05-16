@@ -1,7 +1,4 @@
-package VO
-
-import com.demo.linksharing.User
-
+package vo
 /**
  * Created by akhil on 12/5/17.
  */

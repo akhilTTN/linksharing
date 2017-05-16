@@ -1,4 +1,4 @@
-package CO
+package co
 
 import com.demo.linksharing.User
 import org.springframework.web.multipart.MultipartFile
@@ -7,19 +7,19 @@ import org.springframework.web.multipart.MultipartFile
  * Created by akhil on 14/5/17.
  */
 class FileCO {
-    String description;
+    String description
     long topicId
     User createdBy
     MultipartFile myFile
 
 
     @Override
-    public String toString() {
+     String toString() {
         return "FileCO{" +
                 "description='" + description + '\'' +
                 ", topicId=" + topicId +
                 ", createdBy=" + createdBy +
                 ", myFile=" + myFile +
-                '}';
+                '}'
     }
 }

@@ -1,4 +1,4 @@
-package VO
+package vo
 
 /**
  * Created by akhil on 10/5/17.

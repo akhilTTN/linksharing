@@ -338,7 +338,7 @@ ruleset {
         doNotApplyToClassNames = "*Controller"
     }
     PropertyName {
-        doNotApplyToClassNames = "*CO"
+        doNotApplyToClassNames = "*co"
     }
     VariableName
 
